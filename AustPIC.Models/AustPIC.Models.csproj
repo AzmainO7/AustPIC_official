@@ -63,9 +63,9 @@
   <ItemGroup>
     <Compile Include="AboutModel.cs" />
     <Compile Include="BlogModel.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="ContactModel.cs" />
     <Compile Include="ContestModel.cs" />
+    <Compile Include="CssVariableModel.cs" />
     <Compile Include="EventModel.cs" />
     <Compile Include="GalleryModel.cs" />
     <Compile Include="CommitteeModel.cs" />

@@ -42,7 +42,7 @@
     </div>*@
 
     <div id="blog" class="row g-5">
-        <div class="col-lg-10">
+        <div class="col-xl-10">
             <div class="row mb-2" data-aos="fade-up" data-aos-delay="200">
                 @foreach (var item in Model.blogList)
                 {
@@ -59,22 +59,28 @@
                             </div>
                             @if (item.BlogImg != null)
                             {
-                                <div class="col-md-4 d-none d-lg-block">
+                                @*<div class="col-md-4 d-none d-lg-block">
                                     <img class="rounded-end" src=~/@item.BlogImg />
+                                </div>*@
+@*                                <div class="col-md-4 d-none d-md-block" style="position: relative;">
+                                    <img class="rounded-end" src=~/@item.BlogImg style="height: 100%; object-fit: contain; max-width: 100%;">
+                                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to left, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.6));"></div>
+                                </div>*@
+                                <div class="col-md-4 d-none d-md-block">
+                                    <img class="rounded-end" src=~/@item.BlogImg style="height: 100%; object-fit: contain; max-width: 100%;">
                                 </div>
                             }
-
                         </div>
                     </div>
                 }
             </div>
         </div>
 
-        <div class="col-lg-2">
+        <div class="col-xl-2">
             <div class="position-sticky mt-2 pt-5" style="top: 2rem;">
                 <div class="p-4 mb-3 bg-light rounded">
 
-                    <a asp-action="CreateBlog" class="px-4 btn btn-outline-primary rounded-pill">Post Blog</a>
+                    <a asp-action="CreateBlog" class="px-4 blog-button">Post Blog</a>
 
                     <div class="pt-4">
                         <h4 class="fst-italic">Categories</h4>

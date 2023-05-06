@@ -1,4 +1,5 @@
 ﻿using AustPIC.db.DbOperations;
+using AustPICWeb.Repositories.CssVariable;
 using AustPICWeb.Repositories.Event;
 using AustPICWeb.Repositories.Gallery;
 using Microsoft.AspNetCore.Authorization;
@@ -9,22 +10,28 @@ namespace AustPICWeb.Controllers
     [Authorize] 
     public class EventController : Controller
     {
-        private readonly IEventRepository _testService;
+        private readonly IEventRepository _eventRepository;
+        private readonly ICssRepository _cssRepository;
 
-        public EventController(IEventRepository testService)
+        public EventController(IEventRepository eventRepository, ICssRepository cssRepository)
         {
-            _testService = testService;
+            _eventRepository = eventRepository;
+            _cssRepository = cssRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var events = await _testService.GetEventList();
+            var events = await _eventRepository.GetEventList();
+            var cssVariables = await _cssRepository.GetCssVariablesList();
+            ViewBag.CssVariables = cssVariables;
             return View(events);
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var detail = await _testService.GetEventDetail(id);
+            var detail = await _eventRepository.GetEventDetail(id);
+            var cssVariables = await _cssRepository.GetCssVariablesList();
+            ViewBag.CssVariables = cssVariables;
             return View(detail);
         }
     }
