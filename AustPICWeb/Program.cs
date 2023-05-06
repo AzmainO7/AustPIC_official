@@ -3,6 +3,7 @@ using AustPICWeb.DBContexts;
 using AustPICWeb.Repositories.Blog;
 using AustPICWeb.Repositories.Committee;
 using AustPICWeb.Repositories.Contest;
+using AustPICWeb.Repositories.CssVariable;
 using AustPICWeb.Repositories.Event;
 using AustPICWeb.Repositories.Gallery;
 using Microsoft.AspNetCore.Identity;
@@ -28,6 +29,7 @@ builder.Services.AddScoped<ICommitteeRepository, CommitteeRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IContestRepository, ContestRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+builder.Services.AddScoped<ICssRepository, CssRepository>();
 
 var app = builder.Build();
 

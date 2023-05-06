@@ -1,20 +1,25 @@
 ﻿using AustPICWeb.Repositories.Contest;
+using AustPICWeb.Repositories.CssVariable;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AustPICWeb.Controllers
 {
     public class NewsController : Controller
     {
-        private readonly IContestRepository _testService;
+        private readonly IContestRepository _contestRepository;
+        private readonly ICssRepository _cssRepository;
 
-        public NewsController(IContestRepository testService)
+        public NewsController(IContestRepository contestRepository, ICssRepository cssRepository)
         {
-            _testService = testService;
+            _contestRepository = contestRepository;
+            _cssRepository = cssRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var contests = await _testService.GetContestList();
+            var contests = await _contestRepository.GetContestList();
+            var cssVariables = await _cssRepository.GetCssVariablesList();
+            ViewBag.CssVariables = cssVariables;
             return View(contests);
         }
 

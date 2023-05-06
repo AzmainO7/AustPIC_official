@@ -1,6 +1,7 @@
 ﻿using AustPIC.Models;
 using AustPIC.Models.ViewModels;
 using AustPICWeb.Repositories.Blog;
+using AustPICWeb.Repositories.CssVariable;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,25 +10,30 @@ namespace AustPICWeb.Controllers
     [Authorize]
     public class BlogController : Controller
     {
-        private readonly IBlogRepository _testService;
+        private readonly IBlogRepository _blogRepository;
+        private readonly ICssRepository _cssRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public BlogController(IBlogRepository testService, IWebHostEnvironment webHostEnvironment)
+        public BlogController(IBlogRepository blogRepository, ICssRepository cssRepository, IWebHostEnvironment webHostEnvironment)
         {
-            _testService = testService;
+            _blogRepository = blogRepository;
+            _cssRepository = cssRepository;
             _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index(string category, string date)
         {
-            //var blogTop2 = await _testService.GetTop2BlogList();
-            //var topblog = await _testService.GetTopBlog();
-            var categoryList = await _testService.GetBlogCategoryList();
-            var dateList = await _testService.GetBlogDateList();
+            //var blogTop2 = await _blogRepository.GetTop2BlogList();
+            //var topblog = await _blogRepository.GetTopBlog();
+            var categoryList = await _blogRepository.GetBlogCategoryList();
+            var dateList = await _blogRepository.GetBlogDateList();
+            var cssVariables = await _cssRepository.GetCssVariablesList();
+            ViewBag.CssVariables = cssVariables;
+
             if (category != null)
             {
                 ViewBag.Category = category;
-                var blogList = await _testService.GetBlogListByCategory(category);
+                var blogList = await _blogRepository.GetBlogListByCategory(category);
                 var model = new BlogViewModel { blogList = blogList, category = categoryList, date = dateList };
 
                 return View(model);
@@ -35,14 +41,14 @@ namespace AustPICWeb.Controllers
             else if (date != null)
             {
                 ViewBag.Date = date;
-                var blogList = await _testService.GetBlogListByDate(date);
+                var blogList = await _blogRepository.GetBlogListByDate(date);
                 var model = new BlogViewModel { blogList = blogList, category = categoryList, date = dateList };
 
                 return View(model);
             }
             else
             {
-                var blogList = await _testService.GetBlogList();
+                var blogList = await _blogRepository.GetBlogList();
                 var model = new BlogViewModel { blogList = blogList, category = categoryList, date = dateList };
 
                 return View(model);
@@ -51,16 +57,21 @@ namespace AustPICWeb.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var categoryList = await _testService.GetBlogCategoryList();
-            var dateList = await _testService.GetBlogDateList();
+            var categoryList = await _blogRepository.GetBlogCategoryList();
+            var dateList = await _blogRepository.GetBlogDateList();
             ViewBag.Category = categoryList;
             ViewBag.Date = dateList;
-            var detail = await _testService.GetBlogDetail(id);
+            var detail = await _blogRepository.GetBlogDetail(id);
+
+            var cssVariables = await _cssRepository.GetCssVariablesList();
+            ViewBag.CssVariables = cssVariables;
             return View(detail);
         }
 
-        public IActionResult CreateBlog()
+        public async Task<IActionResult> CreateBlog()
         {
+            var cssVariables = await _cssRepository.GetCssVariablesList();
+            ViewBag.CssVariables = cssVariables;
             return View();
         }
 
@@ -81,10 +92,12 @@ namespace AustPICWeb.Controllers
                     await img.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
                 }
 
-                await _testService.AddBlogDetail(blog);
+                await _blogRepository.AddBlogDetail(blog);
                 return Ok();
             }
 
+            var cssVariables = await _cssRepository.GetCssVariablesList();
+            ViewBag.CssVariables = cssVariables;
             return View(blog);
         }
 

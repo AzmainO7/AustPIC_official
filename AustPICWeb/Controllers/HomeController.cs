@@ -4,15 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using AustPIC.Models.ViewModels;
 using AustPICWeb.Repositories.Committee;
+using AustPICWeb.Repositories.CssVariable;
 
 namespace AustPICWeb.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ICommitteeRepository _testService;
-        public HomeController(ICommitteeRepository testService)
+        private readonly ICommitteeRepository _committeeRepository;
+        private readonly ICssRepository _cssRepository;
+        public HomeController(ICommitteeRepository committeeRepository, ICssRepository cssRepository)
         {
-            _testService = testService;
+            _committeeRepository = committeeRepository;
+            _cssRepository = cssRepository;
         }
 
         //private readonly ILogger<HomeController> _logger;
@@ -25,8 +28,9 @@ namespace AustPICWeb.Controllers
         public async Task<IActionResult> Index()
         {
             //var committee = repository.GetCommitteeData();
-            var committee = await _testService.GetTopMemberList();
-            //ViewData["NavbarColor"] = "#37517e";
+            var committee = await _committeeRepository.GetTopMemberList();
+            var cssVariables = await _cssRepository.GetCssVariablesList();
+            ViewBag.CssVariables = cssVariables;
 
             return View(committee);
         }

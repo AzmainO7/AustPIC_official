@@ -7,9 +7,6 @@
     <meta content="" name="description">
     <meta content="" name="keywords">
 
-    @*    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
-    @*    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />*@
-
     <!-- Favicons -->
     <link href="img/favicon.png" rel="icon">
     <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -29,15 +26,38 @@
     <!-- Template Main CSS File -->
     <link href="css/style.css" rel="stylesheet">
 
-    <!-- =======================================================
-    * Template Name: Arsha - v4.10.0
-    * Template URL: https://bootstrapmade.com/arsha-free-bootstrap-html-template-corporate/
-    * Author: BootstrapMade.com
-    * License: https://bootstrapmade.com/license/
-    ======================================================== -->
 </head>
 
 <body>
+
+    @*@RenderSection("Style", required: false)*@
+
+@*    <style>
+        :root {
+            --a-hover-color: #73c5eb;
+            --navbar-scroll-color-rgb: 40, 58, 90;
+            --hero-bg-color: #37517e;
+            --hero-button-bg-color: #47b2e4;
+            --hero-button-bg-color-hover: #209dd8;
+            --hero-bottom-divider-bg-color: #f3f5fa;
+            --achievements-bg-img: url("../img/formation.jpg");
+            --hero-bg-color-rgb: 55, 81, 126;
+            --team-divider-color: #cbd6e9;
+            --team-social-bg-color: #eff2f8;
+            --contact-info-icon-bg-color: #e7f5fb;
+            --contact-info-p-color: #6182ba;
+            --breadcrumbs-slash-color: #4668a2;
+        }
+    </style>*@
+
+    <style>
+        :root {
+        @foreach (var variable in ViewBag.CssVariables)
+        {
+            @Html.Raw(variable.VarName + ": " + variable.VarValue + ";")
+        }
+        }
+    </style>
 
     <!-- ======= Header ======= -->
     <header id="header" class="fixed-top">
@@ -74,9 +94,9 @@
     alert("Doc is ready");
     });
     </script>*@
-@*    <script>
-        const myButton = document.getElementById('hero');
-        myButton.style.setProperty('--hero-bg-color', '#fff'');
+    @*    <script>
+    const myButton = document.getElementById('hero');
+    myButton.style.setProperty('--hero-bg-color', '#fff'');
     </script>*@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
