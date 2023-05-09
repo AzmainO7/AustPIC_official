@@ -75,21 +75,47 @@ namespace AustPICWeb.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> CreateBlog(BlogModel blog, IFormFile img)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (img != null && img.Length > 0)
+        //        {
+        //            string folder = "blogs/image/";
+        //            folder += Guid.NewGuid().ToString() + "_" + img.FileName;
+
+        //            blog.BlogImg = folder;
+
+        //            string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
+
+        //            await img.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+        //        }
+
+        //        await _blogRepository.AddBlogDetail(blog);
+        //        return Ok();
+        //    }
+
+        //    var cssVariables = await _cssRepository.GetCssVariablesList();
+        //    ViewBag.CssVariables = cssVariables;
+        //    return View(blog);
+        //} 
+        
         [HttpPost]
-        public async Task<IActionResult> CreateBlog(BlogModel blog, IFormFile img)
+        public async Task<IActionResult> CreateBlog(BlogModel blog)
         {
             if (ModelState.IsValid)
             {
-                if (img != null && img.Length > 0)
+                if (blog.BlogImgFile != null && blog.BlogImgFile.Length > 0)
                 {
                     string folder = "blogs/image/";
-                    folder += Guid.NewGuid().ToString() + "_" + img.FileName;
+                    folder += Guid.NewGuid().ToString() + "_" + blog.BlogImgFile.FileName;
 
                     blog.BlogImg = folder;
 
                     string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
 
-                    await img.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+                    await blog.BlogImgFile.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
                 }
 
                 await _blogRepository.AddBlogDetail(blog);

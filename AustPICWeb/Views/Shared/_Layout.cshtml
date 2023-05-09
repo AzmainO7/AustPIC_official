@@ -87,16 +87,13 @@
     <script src="js/main.js"></script>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @*    <script>
     $(document).ready(function () {
     alert("Doc is ready");
     });
-    </script>*@
-    @*    <script>
-    const myButton = document.getElementById('hero');
-    myButton.style.setProperty('--hero-bg-color', '#fff'');
     </script>*@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
