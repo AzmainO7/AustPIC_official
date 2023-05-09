@@ -29,55 +29,80 @@ unlayer.loadBlank({
     }
 });
 
-$('#create-button').on('click', function () {
+unlayer.addEventListener('design:updated', function (updates) {
     unlayer.exportHtml(function (data) {
+        var json = data.design; // design json
+        var html = data.html; // design html
         var BlogBody = data.chunks.body;
-        var BlogTitle = $('#title').val();
-        var BlogAuthor = $('#author').val();
-        var BlogCatergory = $('#catergory').val();
-        var BlogShort = $('#short').val();
+        $('#unlayer-html').val(BlogBody);
+    })
+})
 
-        if (BlogTitle != "" && BlogAuthor != "" && BlogCatergory != "" && BlogShort != "") {
-            var uploadFile = $('#img').get(0);
-            var files = uploadFile.files;
-            var BlogImg = null;
+function onComplete(response) {
+    //alert("Ajax Request Complete");
+    console.log(response);
+}
+function onSuccess(response) {
+    alert("Blog Posted");
+    window.location.href = '/Blog/Index';
+    console.log(response);
+}
+function onFailure(response) {
+    alert("Blog Post Failure");
+    console.log(response);
+}
 
-            if (files.length > 0) {
-                BlogImg = files[0];
-            }
+//$('#create-button').on('click', function () {
+//    unlayer.exportHtml(function (data) {
+//        var BlogBody = data.chunks.body;
+//        var BlogTitle = $('#title').val();
+//        var BlogAuthor = $('#author').val();
+//        var BlogCatergory = $('#catergory').val();
+//        var BlogShort = $('#short').val();
 
-            var formData = new FormData();
-            formData.append("BlogTitle", BlogTitle);
-            formData.append("BlogAuthor", BlogAuthor);
-            formData.append("BlogCatergory", BlogCatergory);
-            formData.append("BlogShort", BlogShort);
-            formData.append("BlogBody", BlogBody);
+//        if (BlogTitle != "" && BlogAuthor != "" && BlogCatergory != "" && BlogShort != "") {
+//            var uploadFile = $('#img').get(0);
+//            var files = uploadFile.files;
+//            var BlogImg = null;
 
-            if (BlogImg != null) {
-                formData.append("img", BlogImg, BlogImg.name);
-            }
+//            if (files.length > 0) {
+//                BlogImg = files[0];
+//            }
 
-            $.ajax({
-                url: '/Blog/CreateBlog',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    alert("Blog Posted");
-                    window.location.href = '/Blog/Index';
-                    console.log(response);
-                },
-                error: function (error) {
-                    alert("Blog Post Failed");
-                    console.log(error);
-                }
-            });
-        } else {
-            alert("One or more input fields are empty.");
-        }
-    });
-});
+//            var formData = new FormData();
+//            formData.append("BlogTitle", BlogTitle);
+//            formData.append("BlogAuthor", BlogAuthor);
+//            formData.append("BlogCatergory", BlogCatergory);
+//            formData.append("BlogShort", BlogShort);
+//            formData.append("BlogBody", BlogBody);
+
+//            if (BlogImg != null) {
+//                formData.append("img", BlogImg, BlogImg.name);
+//            }
+
+//            $.ajax({
+//                url: '/Blog/CreateBlog',
+//                type: 'POST',
+//                data: formData,
+//                processData: false,
+//                contentType: false,
+//                success: function (response) {
+//                    alert("Blog Posted");
+//                    window.location.href = '/Blog/Index';
+//                    console.log(response);
+//                },
+//                error: function (error) {
+//                    alert("Blog Post Failed");
+//                    console.log(error);
+//                }
+//            });
+//        } else {
+//            alert("One or more input fields are empty.");
+//        }
+//    });
+//});
+
+
 
 //$('#create-button').on('click', function () {
 //    //unlayer.exportHtml({ includeMetaData: false }, function (data) {
