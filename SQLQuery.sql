@@ -60,3 +60,57 @@ BEGIN
     RETURN(-1)
 END
 
+DROP TABLE NewsletterSubscribers
+CREATE TABLE NewsletterSubscribers (
+  id INT IDENTITY(1,1) PRIMARY KEY,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  subscribed_at DATETIME DEFAULT GETDATE()
+);
+
+USE [AustPIC]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/******************************************************************************************************************************************************
+* Database:                     AustPIC
+* Procedure Name:               [dbo].[AustPIC_SaveEmail]
+* Date:                         May 13, 2023
+* Author:                       Azmain 
+* Procedure Description:        Save Newsletter Email
+* Example:						SELECT [dbo].[AustPIC_SaveEmail]
+*****************************************************************************************************************************************************
+--------------------------------------------------------------------------------------------------------------------
+DATE:				Developer				DEN #				Change
+--------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------*/
+CREATE PROCEDURE [dbo].[AustPIC_SaveEmail]	
+(
+	@email varchar(255) ,
+	@subscribed_at datetime
+)
+AS
+DECLARE @ErrNo int
+BEGIN
+	SET NOCOUNT ON;
+
+	Insert INTO NewsletterSubscribers(email,
+					subscribed_at)
+			Values(
+					@email,
+					@subscribed_at
+				)
+	
+	SET @ErrNo = @@ERROR
+    IF @ErrNo <> 0 GOTO on_error
+
+    SET NOCOUNT OFF;
+    RETURN(1)
+
+    on_error:
+    PRINT 'An error occurred and the error number is : ' + CAST(@ErrNo AS varchar(16))
+    SET NOCOUNT OFF;
+    RETURN(-1)
+END

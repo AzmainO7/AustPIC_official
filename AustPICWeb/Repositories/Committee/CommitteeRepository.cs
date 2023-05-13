@@ -56,6 +56,7 @@ namespace AustPICWeb.Repositories.Committee
 
         public async Task<List<String>> CommitteeSemesterList()
         {
+            Console.WriteLine("Semester DB accessed");
             try
             {
                 var result = await _dapperDBContext.GetInfoListAsync<String>(new

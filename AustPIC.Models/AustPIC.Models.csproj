@@ -69,6 +69,7 @@
     <Compile Include="EventModel.cs" />
     <Compile Include="GalleryModel.cs" />
     <Compile Include="CommitteeModel.cs" />
+    <Compile Include="NewsletterSubscriber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CssViewModel.cs" />
     <Compile Include="ViewModels\EmailReplyModel.cs" />

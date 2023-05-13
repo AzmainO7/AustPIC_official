@@ -7,9 +7,15 @@
                 <div class="col-lg-6">
                     <h4>Join Our Newsletter</h4>
                     @*<p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>*@
-                    <form action="">
-                        <input type="email" name="email" placeholder="Enter your email"><input type="submit" value="Subscribe">
+                    <form method="post" data-ajax="true" data-ajax-complete="onCompleteNewsletter" data-ajax-success="onSuccessNewsletter" data-ajax-failure="onFailureNewsletter" data-ajax-loading="#spinner" data-ajax-url="@Url.Action("Index", "Newsletter")">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                        <input type="submit" value="Subscribe">
                     </form>
+                    <div class="d-flex justify-content-center my-4">
+                        <div class="spinner-border" role="status" id="spinner" style="display: none;">
+                        <span class="visually-hidden">Loading...</span>
+                   </div>
+                 </div>
                 </div>
             </div>
         </div>
