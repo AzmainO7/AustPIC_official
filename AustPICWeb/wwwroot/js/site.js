@@ -47,9 +47,38 @@ function onSuccess(response) {
     window.location.href = '/Blog/Index';
     console.log(response);
 }
-function onFailure(response) {
+function onFailure(xhr, status, error) {
     alert("Blog Post Failure");
+    console.error(xhr, status, error);
+}
+
+function onCompleteNewsletter(response) {
     console.log(response);
+}
+function onSuccessNewsletter(data, status, xhr) {
+    console.log(xhr.status);
+    console.log(xhr.responseText);
+    toastr.options = {
+        positionClass: "toast-bottom-center",
+        preventDuplicates: true,
+        progressBar: true
+    };
+    toastr.success("Thank you for subscribing!");
+}
+function onFailureNewsletter(xhr, status, error) {
+    console.log(xhr.status);
+    console.log(xhr.responseText);
+    toastr.options = {
+        positionClass: "toast-bottom-center",
+        preventDuplicates: true,
+        progressBar: true
+    };
+    if (xhr.status === 409) {
+        toastr.warning("You have already subscribed to our newsletter!");
+    } else {
+        toastr.error("An error occurred while subscribing to our newsletter. Please try again later.");
+    }
+    console.error(xhr, status, error);
 }
 
 //$('#create-button').on('click', function () {

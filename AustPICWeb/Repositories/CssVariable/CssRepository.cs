@@ -16,6 +16,7 @@ namespace AustPICWeb.Repositories.CssVariable
 
         public async Task<List<CssVariableModel>> GetCssVariablesList()
         {
+            //Console.WriteLine("CSS DB accessed");
             try
             {
                 var result = await _dapperDBContext.GetInfoListAsync<CssVariableModel>(new
