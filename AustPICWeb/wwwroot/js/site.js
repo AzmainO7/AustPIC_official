@@ -43,17 +43,28 @@ function onComplete(response) {
     console.log(response);
 }
 function onSuccess(response) {
-    alert("Blog Posted");
-    window.location.href = '/Blog/Index';
-    console.log(response);
+    toastr.options = {
+        positionClass: "toast-bottom-center",
+        preventDuplicates: true,
+        progressBar: true,
+        onHidden: function () {
+            window.location.href = '/Blog/Index';
+        }
+    };
+    toastr.success("Blog Post Successful! Redirecting...");
 }
 function onFailure(xhr, status, error) {
-    alert("Blog Post Failure");
+    toastr.options = {
+        positionClass: "toast-bottom-center",
+        preventDuplicates: true,
+        progressBar: true
+    };
+    toastr.error("An error occurred while posting the blog. Please try again later.");
     console.error(xhr, status, error);
 }
 
-function onCompleteNewsletter(response) {
-    console.log(response);
+function onCompleteNewsletter(data) {
+    console.log(data);
 }
 function onSuccessNewsletter(data, status, xhr) {
     console.log(xhr.status);
@@ -64,6 +75,7 @@ function onSuccessNewsletter(data, status, xhr) {
         progressBar: true
     };
     toastr.success("Thank you for subscribing!");
+    console.log(data);
 }
 function onFailureNewsletter(xhr, status, error) {
     console.log(xhr.status);

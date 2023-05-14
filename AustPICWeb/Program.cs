@@ -1,5 +1,6 @@
 using AustPICWeb.Data;
 using AustPICWeb.DBContexts;
+using AustPICWeb.Middleware;
 using AustPICWeb.Repositories.Blog;
 using AustPICWeb.Repositories.Committee;
 using AustPICWeb.Repositories.Contest;
@@ -49,7 +50,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseAntiXssMiddleware();
 app.UseRouting();
 
 app.UseAuthentication();

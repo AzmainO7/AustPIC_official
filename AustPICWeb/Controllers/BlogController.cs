@@ -100,7 +100,7 @@ namespace AustPICWeb.Controllers
         //    ViewBag.CssVariables = cssVariables;
         //    return View(blog);
         //} 
-        
+
         [HttpPost]
         public async Task<IActionResult> CreateBlog(BlogModel blog)
         {
@@ -118,8 +118,17 @@ namespace AustPICWeb.Controllers
                     await blog.BlogImgFile.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
                 }
 
-                await _blogRepository.AddBlogDetail(blog);
-                return Ok();
+                try
+                {
+                    await _blogRepository.AddBlogDetail(blog);
+                    return Ok();
+                }
+                catch
+                (Exception ex)
+                {
+                    return StatusCode(500, "error");
+                }
+
             }
 
             var cssVariables = await _cssRepository.GetCssVariablesList();
