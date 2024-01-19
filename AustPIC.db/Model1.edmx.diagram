@@ -12,6 +12,8 @@
         <EntityTypeShape EntityType="AustPICModel.Blog" Width="1.5" PointX="9.75" PointY="3.75" />
         <EntityTypeShape EntityType="AustPICModel.Contest" Width="1.5" PointX="0.75" PointY="4.75" />
         <EntityTypeShape EntityType="AustPICModel.Event" Width="1.5" PointX="6.75" PointY="4.75" />
+        <EntityTypeShape EntityType="AustPICModel.CssVariables" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="AustPICModel.CssVariables1" Width="1.5" PointX="3.375" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

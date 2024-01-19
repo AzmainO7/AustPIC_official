@@ -16,7 +16,7 @@
           <Property Name="BlogCatergory" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="BlogShort" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="BlogBody" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="BlogImg" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="BlogImg" Type="varchar" MaxLength="100" />
           <Property Name="BlogView" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Committee">
@@ -33,6 +33,7 @@
           <Property Name="CommitteeFacebook" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CommitteeEmail" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CommitteeStatus" Type="int" Nullable="false" />
+          <Property Name="CommitteeIteration" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Contact">
           <Key>
@@ -56,6 +57,21 @@
           <Property Name="ContestImg" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ContestStart" Type="datetime" Nullable="false" />
           <Property Name="ContestEnd" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CssVariables">
+          <Key>
+            <PropertyRef Name="VarName" />
+          </Key>
+          <Property Name="VarName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="VarValue" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CssVariables1">
+          <Key>
+            <PropertyRef Name="VarId" />
+          </Key>
+          <Property Name="VarId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VarName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="VarValue" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Event">
           <Key>
@@ -98,6 +114,8 @@
           <EntitySet Name="Committee" EntityType="Self.Committee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Contact" EntityType="Self.Contact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Contest" EntityType="Self.Contest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CssVariables" EntityType="Self.CssVariables" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CssVariables1" EntityType="Self.CssVariables1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Gallery" EntityType="Self.Gallery" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
@@ -114,6 +132,8 @@
           <EntitySet Name="Blog" EntityType="AustPICModel.Blog" />
           <EntitySet Name="Contest" EntityType="AustPICModel.Contest" />
           <EntitySet Name="Event" EntityType="AustPICModel.Event" />
+          <EntitySet Name="CssVariables" EntityType="AustPICModel.CssVariables" />
+          <EntitySet Name="CssVariables1" EntityType="AustPICModel.CssVariables1" />
         </EntityContainer>
         <EntityType Name="Gallery">
           <Key>
@@ -166,6 +186,7 @@
           <Property Name="CommitteeFacebook" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CommitteeEmail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CommitteeStatus" Type="Int32" Nullable="false" />
+          <Property Name="CommitteeIteration" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Blog">
           <Key>
@@ -178,7 +199,7 @@
           <Property Name="BlogCatergory" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="BlogShort" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="BlogBody" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="BlogImg" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="BlogImg" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="BlogView" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Contest">
@@ -202,6 +223,21 @@
           <Property Name="EventImg" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="EventStart" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EventEnd" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="CssVariables">
+          <Key>
+            <PropertyRef Name="VarName" />
+          </Key>
+          <Property Name="VarName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VarValue" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CssVariables1">
+          <Key>
+            <PropertyRef Name="VarId" />
+          </Key>
+          <Property Name="VarId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VarName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VarValue" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -252,6 +288,7 @@
           <EntitySetMapping Name="Committee">
             <EntityTypeMapping TypeName="AustPICModel.Committee">
               <MappingFragment StoreEntitySet="Committee">
+                <ScalarProperty Name="CommitteeIteration" ColumnName="CommitteeIteration" />
                 <ScalarProperty Name="CommitteeStatus" ColumnName="CommitteeStatus" />
                 <ScalarProperty Name="CommitteeEmail" ColumnName="CommitteeEmail" />
                 <ScalarProperty Name="CommitteeFacebook" ColumnName="CommitteeFacebook" />
@@ -301,6 +338,23 @@
                 <ScalarProperty Name="EventDesc" ColumnName="EventDesc" />
                 <ScalarProperty Name="EventTitle" ColumnName="EventTitle" />
                 <ScalarProperty Name="EventId" ColumnName="EventId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CssVariables">
+            <EntityTypeMapping TypeName="AustPICModel.CssVariables">
+              <MappingFragment StoreEntitySet="CssVariables">
+                <ScalarProperty Name="VarValue" ColumnName="VarValue" />
+                <ScalarProperty Name="VarName" ColumnName="VarName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CssVariables1">
+            <EntityTypeMapping TypeName="AustPICModel.CssVariables1">
+              <MappingFragment StoreEntitySet="CssVariables1">
+                <ScalarProperty Name="VarValue" ColumnName="VarValue" />
+                <ScalarProperty Name="VarName" ColumnName="VarName" />
+                <ScalarProperty Name="VarId" ColumnName="VarId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

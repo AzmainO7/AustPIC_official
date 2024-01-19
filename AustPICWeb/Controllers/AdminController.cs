@@ -15,6 +15,7 @@ namespace AustPICWeb.Controllers
         CommitteeRepository CmtRepository = null;
         EventRepository EvntRepository = null;
         ContactRepository contactRepository = null;
+        CssRepository CssRepository = null;
         private IConfiguration Configuration;
 
         public AdminController(IConfiguration _configuration)
@@ -22,6 +23,7 @@ namespace AustPICWeb.Controllers
             CmtRepository = new CommitteeRepository();
             EvntRepository = new EventRepository();
             contactRepository = new ContactRepository();
+            CssRepository = new CssRepository();
             Configuration = _configuration;
         }
 
@@ -106,6 +108,30 @@ namespace AustPICWeb.Controllers
                     ModelState.Clear();
                     ViewBag.success = "Data Added";
                 }
+            }
+            return View();
+        }
+
+        public IActionResult GetAllCss()
+        {
+            var result = CssRepository.GetAllCssVariables();
+            return View(result);
+        }
+
+        [HttpGet]
+        public IActionResult EditCss(int id)
+        {
+            var evnt = CssRepository.GetCssVariables(id);
+            return View(evnt);
+        }
+
+        [HttpPost]
+        public IActionResult EditCss(CssVariableModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                CssRepository.UpdateCssVariables(model.VarId, model);
+                return RedirectToAction("GetAllCss");
             }
             return View();
         }
