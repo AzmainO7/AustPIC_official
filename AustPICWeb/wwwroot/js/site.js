@@ -42,17 +42,141 @@ function onComplete(response) {
     //alert("Ajax Request Complete");
     console.log(response);
 }
-function onSuccess(response) {
+//function onsuccess(response) {
+//    toastr.options = {
+//        positionclass: "toast-bottom-center",
+//        preventduplicates: true,
+//        progressbar: true,
+//        onhidden: function () {
+//            window.location.href = '/blog/index';
+//        }
+//    };
+//    toastr.success("Blog Post Successful! Redirecting...");
+//}
+
+async function query(data) {
+    const response = await fetch(
+        "https://api-inference.huggingface.co/models/ProsusAI/finbert",
+        {
+            headers: { Authorization: "Bearer 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" },
+            method: "POST",
+            body: JSON.stringify(data),
+        }
+    );
+    const result = await response.json();
+    return result;
+}
+
+//query({ "inputs": "I like you. I love you" }).then((response) => {
+//    console.log(JSON.stringify(response));
+//});
+
+async function classifyBlogSentiment(blogBody) {
+
+    console.log(blogBody);
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = blogBody;
+    let extractedText = tempDiv.textContent.replace(/\n/g, '').replace(/\s+/g, ' ').trim();
+
+    console.log(extractedText);
+
+    const maxLength = 2300;
+    if (extractedText.length > maxLength) {
+        extractedText = extractedText.substring(0, maxLength);
+    }
+
+    console.log(extractedText);
+
+    const data = {
+        "inputs": extractedText
+    };
+
+    console.log(data);
+
+    try {
+        const result = await query(data);
+
+        let negativeScore;
+        let positiveScore;
+        let neutralScore;
+        let labelResult = result[0][0].label;
+
+        //console.log("Sentiment Analysis Result:", result[0]);
+
+        for (let i = 0; i < result[0].length; i++) {
+            if (result[0][i].label === "negative") {
+                negativeScore = result[0][i].score;
+            } else if (result[0][i].label === "positive") {
+                positiveScore = result[0][i].score;
+            } else if (result[0][i].label === "neutral") {
+                neutralScore = result[0][i].score;
+            }
+        }
+
+        console.log("Result:", labelResult);
+        
+        console.log("Neutral Score:", neutralScore);
+        console.log("Positive Score:", positiveScore);
+        console.log("Negative Score:", negativeScore);
+
+        //const neutralScore = result[0][0].label === "neutral" ? result[0][0].score : null;
+        //console.log("Neutral Label Score:", neutralScore);
+
+        return { labelResult, neutralScore, positiveScore, negativeScore };
+
+    } catch (error) {
+        console.error("Error during sentiment analysis:", error);
+
+        // Check if the error is due to model loading
+        if (error.error === "Model ProsusAI/finbert is currently loading") {
+            const estimatedTime = error.estimated_time || 20; // Default to 20 seconds if estimated_time is not provided
+            console.log(`Model loading, retrying in ${estimatedTime} seconds...`);
+
+            // Retry after the estimated time
+            setTimeout(() => {
+                classifyBlogSentiment(blogBody);
+            }, estimatedTime * 1000); // Convert seconds to milliseconds
+        }
+
+        return null;
+    }
+}
+
+
+async function onSuccess(response) {
+
+    let sentimentAnalysisDone = false;
+
     toastr.options = {
         positionClass: "toast-bottom-center",
         preventDuplicates: true,
         progressBar: true,
-        onHidden: function () {
-            window.location.href = '/Blog/Index';
+        onHidden: async function () {
+            try {
+                if (!sentimentAnalysisDone) {
+                    sentimentAnalysisDone = true;
+
+                    const { labelResult, neutralScore, positiveScore, negativeScore } = await classifyBlogSentiment($('#unlayer-html').val());
+
+                    console.log(labelResult);
+
+                    if (labelResult === "negative" || negativeScore >= 0.5) {
+                        toastr.warning("Blog blocked by the AI moderator! Please re-check for negative sentiments and Try again.");
+                    } else {
+                        toastr.success("Blog Post Successful! Redirecting...")
+                        window.location.href = '/Blog/Index';
+                    }
+                }
+            } catch (error) {
+                console.error("Error during sentiment analysis:", error);
+            }
         }
     };
-    toastr.success("Blog Post Successful! Redirecting...");
+    toastr.success("Wait for moderation...");
 }
+
+
 function onFailure(xhr, status, error) {
     toastr.options = {
         positionClass: "toast-bottom-center",

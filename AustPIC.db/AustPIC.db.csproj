@@ -212,7 +212,14 @@
     <Compile Include="Contest.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="CssVariables.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CssVariables1.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbOperations\ContactRepository.cs" />
+    <Compile Include="DbOperations\CssRepository.cs" />
     <Compile Include="DbOperations\EventRepository.cs" />
     <Compile Include="DbOperations\CommitteeRepository.cs" />
     <Compile Include="Event.cs">

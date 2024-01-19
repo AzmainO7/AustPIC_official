@@ -8,6 +8,7 @@ namespace AustPIC.Models
 {
     public class CssVariableModel
     {
+        public int VarId { get; set; }
         public string VarName { get; set; }
         public string VarValue { get; set; }
     }
