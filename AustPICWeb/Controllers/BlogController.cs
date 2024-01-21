@@ -120,7 +120,10 @@ namespace AustPICWeb.Controllers
 
                 try
                 {
-                    await _blogRepository.AddBlogDetail(blog);
+                    if(blog.BlogClass != "negative")
+                    {
+                        await _blogRepository.AddBlogDetail(blog);
+                    }
                     return Ok();
                 }
                 catch

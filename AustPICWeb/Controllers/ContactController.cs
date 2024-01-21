@@ -1,6 +1,7 @@
 ﻿using AustPIC.db.DbOperations;
 using AustPIC.Models;
 using AustPICWeb.Repositories.CssVariable;
+using AustPICWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Core.Types;
 
@@ -10,15 +11,17 @@ namespace AustPICWeb.Controllers
     {
         //ContactRepository ContactRepository = null;
         private readonly ICssRepository _cssRepository;
+        private readonly IEmailSender _emailSender;
 
         //public ContactController()
         //{
         //    ContactRepository = new ContactRepository();
         //}
 
-        public ContactController(ICssRepository cssRepository)
+        public ContactController(ICssRepository cssRepository, IEmailSender emailSender)
         {
             _cssRepository = cssRepository;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
@@ -26,6 +29,15 @@ namespace AustPICWeb.Controllers
         {
             var cssVariables = await _cssRepository.GetCssVariablesList();
             ViewBag.CssVariables = cssVariables;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(ContactModel contactModel)
+        {
+            var cssVariables = await _cssRepository.GetCssVariablesList();
+            ViewBag.CssVariables = cssVariables;
+            await _emailSender.SendEmailAsync(contactModel.ContactEmail, contactModel.ContactSubject, contactModel.ContactMessage);
             return View();
         }
 

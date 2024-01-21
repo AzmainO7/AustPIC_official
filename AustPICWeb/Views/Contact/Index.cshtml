@@ -1,4 +1,5 @@
 ﻿@model AustPIC.Models.ContactModel
+@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     ViewData["Title"] = "Contact Us";
@@ -43,7 +44,7 @@
 
             <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
                 @*<form action="forms/contact.php" method="post" role="form" class="php-email-form">*@
-                <form asp-action="Contact" class="php-email-form">
+                <form class="php-email-form" method="post" asp-controller="Contact" asp-action="Index" enctype="multipart/form-data">
                     @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
                     <div class="row">
                         <div class="form-group col-md-6">
@@ -53,7 +54,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label asp-for="ContactEmail" class="control-label"></label>
-                            <input asp-for="ContactEmail" class="form-control" />
+                            <input asp-for="ContactEmail" class="form-control" value=""/>
                             @*<span asp-validation-for="ContactEmail" class="text-danger"></span>*@
                         </div>
                     </div>
@@ -67,11 +68,11 @@
                         <textarea asp-for="ContactMessage" class="form-control" rows="10"></textarea>
                         @*<span asp-validation-for="ContactMessage" class="text-danger"></span>*@
                     </div>
-                    <div class="my-3">
+@*                    <div class="my-3">
                         <div class="loading">Loading</div>
                         <div class="error-message"></div>
                         <div class="sent-message">Your message has been sent. Thank you!</div>
-                    </div>
+                    </div>*@
                     @*<input type="submit" value="Create" class="btn btn-primary text-center" />*@
                     <div class="text-center"><button type="submit">Send Message</button></div>
                 </form>
