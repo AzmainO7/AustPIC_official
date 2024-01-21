@@ -8,6 +8,7 @@ using AustPICWeb.Repositories.CssVariable;
 using AustPICWeb.Repositories.Event;
 using AustPICWeb.Repositories.Gallery;
 using AustPICWeb.Repositories.Newsletter;
+using AustPICWeb.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +34,7 @@ builder.Services.AddScoped<IContestRepository, ContestRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 builder.Services.AddScoped<ICssRepository, CssRepository>();
 builder.Services.AddScoped<INewsletterRepository, NewsletterRepository>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 

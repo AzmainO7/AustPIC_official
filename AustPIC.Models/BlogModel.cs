@@ -31,5 +31,6 @@ namespace AustPIC.Models
         [Required(ErrorMessage = "Please upload an image for the blog")]
         [DisplayName("Upload Blog Image")]
         public IFormFile BlogImgFile { get; set; }
+        public string BlogClass { get; set; }
     }
 }

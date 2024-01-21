@@ -35,6 +35,48 @@ unlayer.addEventListener('design:updated', function (updates) {
         var html = data.html; // design html
         var BlogBody = data.chunks.body;
         $('#unlayer-html').val(BlogBody);
+
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = BlogBody;
+        let extractedText = tempDiv.textContent.replace(/\n/g, '').replace(/\s+/g, ' ').trim();
+
+        const maxLength = 2300;
+        if (extractedText.length > maxLength) {
+            extractedText = extractedText.substring(0, maxLength);
+        }
+
+        query({ "inputs": extractedText }).then((response) => {
+            console.log(JSON.stringify(response));
+
+            let negativeScore;
+            let positiveScore;
+            let neutralScore;
+            let labelResult = response[0][0].label;
+
+            //console.log("Sentiment Analysis Result:", result[0]);
+
+            for (let i = 0; i < response[0].length; i++) {
+                if (response[0][i].label === "negative") {
+                    negativeScore = response[0][i].score;
+                } else if (response[0][i].label === "positive") {
+                    positiveScore = response[0][i].score;
+                } else if (response[0][i].label === "neutral") {
+                    neutralScore = response[0][i].score;
+                }
+            }
+
+            console.log("Result:", labelResult);
+            console.log("Neutral Score:", neutralScore);
+            console.log("Positive Score:", positiveScore);
+            console.log("Negative Score:", negativeScore);
+
+            if (labelResult === "negative" || negativeScore >= 0.5) {
+                $('#sclass').val("negative");                       
+            } else {
+                $('#sclass').val(labelResult);
+            }
+            console.log("sclass:", $('#sclass').val());
+        });
     })
 })
 
@@ -71,78 +113,113 @@ async function query(data) {
 //    console.log(JSON.stringify(response));
 //});
 
-async function classifyBlogSentiment(blogBody) {
+//async function classifyBlogSentiment(blogBody) {
 
-    console.log(blogBody);
+//    console.log(blogBody);
 
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = blogBody;
-    let extractedText = tempDiv.textContent.replace(/\n/g, '').replace(/\s+/g, ' ').trim();
+//    const tempDiv = document.createElement('div');
+//    tempDiv.innerHTML = blogBody;
+//    let extractedText = tempDiv.textContent.replace(/\n/g, '').replace(/\s+/g, ' ').trim();
 
-    console.log(extractedText);
+//    console.log(extractedText);
 
-    const maxLength = 2300;
-    if (extractedText.length > maxLength) {
-        extractedText = extractedText.substring(0, maxLength);
-    }
+//    const maxLength = 2300;
+//    if (extractedText.length > maxLength) {
+//        extractedText = extractedText.substring(0, maxLength);
+//    }
 
-    console.log(extractedText);
+//    console.log(extractedText);
 
-    const data = {
-        "inputs": extractedText
-    };
+//    const data = {
+//        "inputs": extractedText
+//    };
 
-    console.log(data);
+//    console.log(data);
 
-    try {
-        const result = await query(data);
+//    try {
+//        const result = await query(data);
 
-        let negativeScore;
-        let positiveScore;
-        let neutralScore;
-        let labelResult = result[0][0].label;
+//        let negativeScore;
+//        let positiveScore;
+//        let neutralScore;
+//        let labelResult = result[0][0].label;
 
-        //console.log("Sentiment Analysis Result:", result[0]);
+//        console.log("Sentiment Analysis Result:", result[0]);
 
-        for (let i = 0; i < result[0].length; i++) {
-            if (result[0][i].label === "negative") {
-                negativeScore = result[0][i].score;
-            } else if (result[0][i].label === "positive") {
-                positiveScore = result[0][i].score;
-            } else if (result[0][i].label === "neutral") {
-                neutralScore = result[0][i].score;
-            }
-        }
+//        for (let i = 0; i < result[0].length; i++) {
+//            if (result[0][i].label === "negative") {
+//                negativeScore = result[0][i].score;
+//            } else if (result[0][i].label === "positive") {
+//                positiveScore = result[0][i].score;
+//            } else if (result[0][i].label === "neutral") {
+//                neutralScore = result[0][i].score;
+//            }
+//        }
 
-        console.log("Result:", labelResult);
+//        console.log("Result:", labelResult);
         
-        console.log("Neutral Score:", neutralScore);
-        console.log("Positive Score:", positiveScore);
-        console.log("Negative Score:", negativeScore);
+//        console.log("Neutral Score:", neutralScore);
+//        console.log("Positive Score:", positiveScore);
+//        console.log("Negative Score:", negativeScore);
 
-        //const neutralScore = result[0][0].label === "neutral" ? result[0][0].score : null;
-        //console.log("Neutral Label Score:", neutralScore);
+//        const neutralScore = result[0][0].label === "neutral" ? result[0][0].score : null;
+//        console.log("Neutral Label Score:", neutralScore);
 
-        return { labelResult, neutralScore, positiveScore, negativeScore };
+//        return { labelResult, neutralScore, positiveScore, negativeScore };
 
-    } catch (error) {
-        console.error("Error during sentiment analysis:", error);
+//    } catch (error) {
+//        console.error("Error during sentiment analysis:", error);
 
-        // Check if the error is due to model loading
-        if (error.error === "Model ProsusAI/finbert is currently loading") {
-            const estimatedTime = error.estimated_time || 20; // Default to 20 seconds if estimated_time is not provided
-            console.log(`Model loading, retrying in ${estimatedTime} seconds...`);
+//         Check if the error is due to model loading
+//        if (error.error === "Model ProsusAI/finbert is currently loading") {
+//            const estimatedTime = error.estimated_time || 20; // Default to 20 seconds if estimated_time is not provided
+//            console.log(`Model loading, retrying in ${estimatedTime} seconds...`);
 
-            // Retry after the estimated time
-            setTimeout(() => {
-                classifyBlogSentiment(blogBody);
-            }, estimatedTime * 1000); // Convert seconds to milliseconds
-        }
+//             Retry after the estimated time
+//            setTimeout(() => {
+//                classifyBlogSentiment(blogBody);
+//            }, estimatedTime * 1000); // Convert seconds to milliseconds
+//        }
 
-        return null;
-    }
-}
+//        return null;
+//    }
+//}
 
+//async function onSuccess(response) {
+
+//    let sentimentAnalysisDone = false;
+
+//    toastr.options = {
+//        positionClass: "toast-bottom-center",
+//        preventDuplicates: true,
+//        progressBar: true,
+//        onHidden: async function () {
+//            try {
+//                if (!sentimentAnalysisDone) {
+//                    sentimentAnalysisDone = true;
+
+//                    const { labelResult, neutralScore, positiveScore, negativeScore } = await classifyBlogSentiment($('#unlayer-html').val());
+
+//                    console.log(labelResult);
+
+//                    if (labelResult === "negative" || negativeScore >= 0.5) {
+//                        $('#sclass').val(labelResult);
+//                        console.log($('#sclass').val());
+//                        toastr.warning("Blog blocked by the AI moderator! Please re-check for negative sentiments and Try again.");
+//                    } else {
+//                        $('#sclass').val(labelResult);
+//                        console.log($('#sclass').val());
+//                        toastr.success("Blog Post Successful! Redirecting...")
+//                        window.location.href = '/Blog/Index';
+//                    }
+//                }
+//            } catch (error) {
+//                console.error("Error during sentiment analysis:", error);
+//            }
+//        }
+//    };
+//    toastr.success("Wait for moderation...");
+//}
 
 async function onSuccess(response) {
 
@@ -157,11 +234,7 @@ async function onSuccess(response) {
                 if (!sentimentAnalysisDone) {
                     sentimentAnalysisDone = true;
 
-                    const { labelResult, neutralScore, positiveScore, negativeScore } = await classifyBlogSentiment($('#unlayer-html').val());
-
-                    console.log(labelResult);
-
-                    if (labelResult === "negative" || negativeScore >= 0.5) {
+                    if ($('#sclass').val() === "negative") {
                         toastr.warning("Blog blocked by the AI moderator! Please re-check for negative sentiments and Try again.");
                     } else {
                         toastr.success("Blog Post Successful! Redirecting...")
@@ -173,9 +246,8 @@ async function onSuccess(response) {
             }
         }
     };
-    toastr.success("Wait for moderation...");
+    toastr.info("Wait for moderation...");
 }
-
 
 function onFailure(xhr, status, error) {
     toastr.options = {

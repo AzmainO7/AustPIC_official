@@ -14,7 +14,7 @@ namespace AustPICWeb.Controllers
     {
         CommitteeRepository CmtRepository = null;
         EventRepository EvntRepository = null;
-        ContactRepository contactRepository = null;
+        //ContactRepository contactRepository = null;
         CssRepository CssRepository = null;
         private IConfiguration Configuration;
 
@@ -22,7 +22,7 @@ namespace AustPICWeb.Controllers
         {
             CmtRepository = new CommitteeRepository();
             EvntRepository = new EventRepository();
-            contactRepository = new ContactRepository();
+            //contactRepository = new ContactRepository();
             CssRepository = new CssRepository();
             Configuration = _configuration;
         }
@@ -172,60 +172,60 @@ namespace AustPICWeb.Controllers
             return RedirectToAction("GetAllEvent");
         }
 
-        public IActionResult GetAllContact()
-        {
-            var result = contactRepository.GetAllContact();
-            if (result != null)
-            {
-                return View(result);
-            }
-            return View();
-        }
+        //public IActionResult GetAllContact()
+        //{
+        //    var result = contactRepository.GetAllContact();
+        //    if (result != null)
+        //    {
+        //        return View(result);
+        //    }
+        //    return View();
+        //}
 
-        public IActionResult ContactDetails(int id)
-        {
-            var result = contactRepository.GetContact(id);
-            return View(result);
-        }
+        //public IActionResult ContactDetails(int id)
+        //{
+        //    var result = contactRepository.GetContact(id);
+        //    return View(result);
+        //}
 
-        public IActionResult ReplyMessage(string email)
-        {           
-            ViewBag.Email = email;
-            return View();
-        }
+        //public IActionResult ReplyMessage(string email)
+        //{           
+        //    ViewBag.Email = email;
+        //    return View();
+        //}
 
-        [HttpPost]
-        public IActionResult ReplyMessage(EmailReplyModel model, int id)
-        {
-            //Read SMTP settings from AppSettings.json.
-            string host = this.Configuration.GetValue<string>("Smtp:Server");
-            int port = this.Configuration.GetValue<int>("Smtp:Port");
-            string fromAddress = this.Configuration.GetValue<string>("Smtp:FromAddress");
-            string userName = this.Configuration.GetValue<string>("Smtp:UserName");
-            string password = this.Configuration.GetValue<string>("Smtp:Password");
+        //[HttpPost]
+        //public IActionResult ReplyMessage(EmailReplyModel model, int id)
+        //{
+        //    //Read SMTP settings from AppSettings.json.
+        //    string host = this.Configuration.GetValue<string>("Smtp:Server");
+        //    int port = this.Configuration.GetValue<int>("Smtp:Port");
+        //    string fromAddress = this.Configuration.GetValue<string>("Smtp:FromAddress");
+        //    string userName = this.Configuration.GetValue<string>("Smtp:UserName");
+        //    string password = this.Configuration.GetValue<string>("Smtp:Password");
 
-            using (MailMessage mm = new MailMessage(fromAddress, model.Email))
-            {
-                mm.Subject = model.Subject;
-                mm.Body = "<br /><br />Email: " + model.Email + "<br />" + model.Body;
-                mm.IsBodyHtml = true;
+        //    using (MailMessage mm = new MailMessage(fromAddress, model.Email))
+        //    {
+        //        mm.Subject = model.Subject;
+        //        mm.Body = "<br /><br />Email: " + model.Email + "<br />" + model.Body;
+        //        mm.IsBodyHtml = true;
 
-                using (SmtpClient smtp = new SmtpClient())
-                {
-                    smtp.Host = host;
-                    smtp.EnableSsl = true;
-                    NetworkCredential NetworkCred = new NetworkCredential(userName, password);
-                    //smtp.UseDefaultCredentials = true;
-                    smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = NetworkCred;
-                    smtp.Port = port;
-                    smtp.Send(mm);                   
-                    contactRepository.UpdateReplyStatus(id);
-                    ViewBag.Message = "Email sent sucessfully.";
-                }
-            }
+        //        using (SmtpClient smtp = new SmtpClient())
+        //        {
+        //            smtp.Host = host;
+        //            smtp.EnableSsl = true;
+        //            NetworkCredential NetworkCred = new NetworkCredential(userName, password);
+        //            //smtp.UseDefaultCredentials = true;
+        //            smtp.UseDefaultCredentials = false;
+        //            smtp.Credentials = NetworkCred;
+        //            smtp.Port = port;
+        //            smtp.Send(mm);                   
+        //            contactRepository.UpdateReplyStatus(id);
+        //            ViewBag.Message = "Email sent sucessfully.";
+        //        }
+        //    }
 
-            return View();
-        }
+        //    return View();
+        //}
     }
 }

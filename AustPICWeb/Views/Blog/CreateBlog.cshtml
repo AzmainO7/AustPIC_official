@@ -66,6 +66,11 @@
             <span asp-validation-for="BlogImgFile" class="text-danger"></span>
         </div>
         <br />
+        <div class="form-group" style="display: none;">
+            <label asp-for="BlogClass" class="control-label pb-2"></label>
+            <input asp-for="BlogClass" id="sclass" class="form-control" />
+            <span asp-validation-for="BlogClass" class="text-danger"></span>
+        </div>
 
         <label asp-for="BlogBody" class="control-label pb-3"></label>
         <input asp-for="BlogBody" type="hidden" id="unlayer-html" value="" />
