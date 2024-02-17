@@ -59,17 +59,17 @@
                 <p id="keywordsContainer"></p>
                 <p>@Model.BlogShort</p>
                 <hr>
-                <div class="blog-content1">
-                    @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.BlogBody))
+                <div class="blog-content1" data-blog-body="@Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.BlogBody))">
                 </div>
                 <div class="blog-content" data-blog-body="@Model.BlogBody" style="display: none;">
                 </div>
+
             </article>
 
-@*            <nav class="blog-pagination mb-4" aria-label="Pagination">
+            <nav class="blog-pagination" aria-label="Pagination">
                 <a class="btn btn-outline-primary rounded-pill" href="#">Older</a>
                 <a class="btn btn-outline-secondary rounded-pill disabled">Newer</a>
-            </nav>*@
+            </nav>
 
         </div>
 

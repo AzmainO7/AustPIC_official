@@ -102,8 +102,8 @@ namespace AustPICWeb.Middleware
             finally
             {
                 // If the response status code is an error code, redirect to an error page
-                //if (context.Response.StatusCode >= 400 && context.Response.StatusCode != 409)
-                if (context.Response.StatusCode >= 400)
+                if (context.Response.StatusCode >= 400 && context.Response.StatusCode != 409)
+                //if (context.Response.StatusCode >= 400)
                 {
                     context.Request.Path = "/Home/Error";
                     context.Response.StatusCode = 200;

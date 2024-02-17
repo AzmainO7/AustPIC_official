@@ -40,11 +40,11 @@ unlayer.addEventListener('design:updated', function (updates) {
         tempDiv.innerHTML = BlogBody;
         let extractedText = tempDiv.textContent.replace(/\n/g, '').replace(/\s+/g, ' ').trim();
 
-        const maxLength = 2300;
+        const maxLength = 1000;
         if (extractedText.length > maxLength) {
             extractedText = extractedText.substring(0, maxLength);
         }
-
+        console.log(extractedText);
         query({ "inputs": extractedText }).then((response) => {
             console.log(JSON.stringify(response));
 
